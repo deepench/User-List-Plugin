@@ -1,0 +1,44 @@
+#pagination{
+  text-align: center;
+  padding: 10px;
+}
+#pagination a{
+  background: #2980b9;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  padding:5px 10px;
+  margin-right: 5px;
+  border-radius: 3px;
+}
+
+.unauthorized-msg{
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: red;
+}
+
+.button {
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 10px;
+        margin:10px;
+         width: 90px;
+        height: 45px;
+    }
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
