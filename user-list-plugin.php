@@ -24,7 +24,6 @@ if (!class_exists('UserList_Plugin')) :
         {
             $this->init();
         }
-
         /**
          * Hooks into actions and filters
          */
