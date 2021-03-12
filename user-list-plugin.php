@@ -37,6 +37,7 @@ if (!class_exists('UserList_Plugin')) :
         }
         /**
          * Including a shorcode List
+         * and checking the user is admin 
          */
         public function ulp_user_list_detail()
         {
@@ -51,6 +52,9 @@ if (!class_exists('UserList_Plugin')) :
          
             return ob_get_clean();
         }
+        /**
+         * including the css nad jaavscript file for intialization
+         */
 
         public function ulp_script_enqueuer()
         {
@@ -64,8 +68,13 @@ if (!class_exists('UserList_Plugin')) :
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script( 'ulp_plugin_script' );
         }
+
+        /**
+         * Processing the userlist data
+         */
         public function ulp_load_table()
         {
+            // Checking the nonce for the security purpose
             if (!check_ajax_referer('ulp-nonce', 'security', false)) {
                 wp_send_json_error(
                     array(
@@ -74,6 +83,7 @@ if (!class_exists('UserList_Plugin')) :
                 );
                
             }
+            
             global $wpdb;
             $role = sanitize_text_field( isset( $_POST['ulp_role'] ) ? $_POST['ulp_role'] : '' );
             $order = sanitize_text_field( isset( $_POST['ulp_order'] ) ? $_POST['ulp_order'] : '' );

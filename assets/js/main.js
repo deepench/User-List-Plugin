@@ -1,8 +1,10 @@
 jQuery(document).ready(function () {
-    function loadTable(page) {
-        var role = jQuery('#ulp_role').val();
-        var order = jQuery('#ulp_order').val();
-        var userorder = jQuery('#ulp_userorder').val();
+
+    // For get the userlist information
+    function loadTable( page ) {
+        var role = jQuery( '#ulp_role' ).val();
+        var order = jQuery( '#ulp_order' ).val();
+        var userorder = jQuery( '#ulp_userorder' ).val();
 
         jQuery.ajax({
             url: myAjax.ajaxurl,
@@ -15,8 +17,8 @@ jQuery(document).ready(function () {
                 ulp_userorder: userorder,
                 security: myAjax.ulp_script_nonce
             },
-            success: function (data) {
-                jQuery("#ulp_list_table").html(data);
+            success: function ( data ) {
+                jQuery( "#ulp_list_table" ).html( data );
             }
         });
     }
@@ -29,7 +31,7 @@ jQuery(document).ready(function () {
         loadTable(page_id);
     })
 
-    // submit the filter and ordering
+    // Submit the filter and ordering
     jQuery(document).on("click", "#submit", function (e) {
         e.preventDefault();
         loadTable(1);
