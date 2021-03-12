@@ -73,6 +73,8 @@ if (!class_exists('UserList_Plugin')) :
          */
         public function ulp_load_table()
         {
+            global $wpdb;
+
             // Checking the nonce for the security purpose
             if (!check_ajax_referer('ulp-nonce', 'security', false)) {
                 wp_send_json_error(
@@ -83,26 +85,32 @@ if (!class_exists('UserList_Plugin')) :
                
             }
             
-            global $wpdb;
-            $role = sanitize_text_field( isset( $_POST['ulp_role'] ) ? $_POST['ulp_role'] : '' );
-            $order = sanitize_text_field( isset( $_POST['ulp_order'] ) ? $_POST['ulp_order'] : '' );
-            $ulp_userorder = sanitize_text_field( isset( $_POST['ulp_userorder'] ) ? $_POST['ulp_userorder'] : '' );
-            $record_per_page = 10;
+            // Sanitizing the fileds to avoid SQL injections
+            $role = sanitize_text_field( isset( $_POST['ulp_role'] ) ? $_POST['ulp_role'] : '' ); //The value of the role we get.
+
+            $order = sanitize_text_field( isset( $_POST['ulp_order'] ) ? $_POST['ulp_order'] : '' ); //the value of the display order.
+
+            $ulp_userorder = sanitize_text_field( isset( $_POST['ulp_userorder'] ) ? $_POST['ulp_userorder'] : '' ); //the value of the user order
+
+            $record_per_page = 10; //Numbr of items to display per page
+
             $page = '';
+
             if ( isset( $_POST["page"] ) ) {
                 $page = $_POST["page"];
             } else {
                 $page = 1;
             }
             $start_from = ( $page - 1 ) * $record_per_page;
-            $rows = $wpdb->get_results( 'SELECT wp_users.ID, wp_users.user_nicename, wp_users.display_name,"' . $role . '" as meta_value 
-                    FROM wp_users INNER JOIN wp_usermeta 
-                    ON wp_users.ID = wp_usermeta.user_id 
-                    WHERE wp_usermeta.meta_key = "wp_capabilities" 
-                    AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ', wp_users . user_nicename ' . $ulp_userorder . '  LIMIT ' . $start_from . ',' . $record_per_page . ' ' );
-            $output = "";
-            $output =  '<table>';
-            $output .=   '<thead>
+
+        //Retrieve all the users
+            $rows = $wpdb->get_results(
+                    'SELECT wp_users.ID, wp_users.user_nicename, wp_users.display_name,"' . $role . '" as meta_value FROM wp_users INNER JOIN wp_usermeta  ON wp_users.ID = wp_usermeta.user_id 
+                    WHERE wp_usermeta.meta_key = "wp_capabilities" AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ', wp_users . user_nicename ' . $ulp_userorder . '  LIMIT ' . $start_from . ',' . $record_per_page . ' ' );
+          
+                    $output = "";
+                    $output =  '<table>';
+                    $output .=   '<thead>
                     <tr>
                         <th> ' . esc_html__( "S.N.", "user-list-plugin" ) . '</th>
                         <th> ' . esc_html__( "User Name", "user-list-plugin" ) . '  </th>
@@ -110,43 +118,51 @@ if (!class_exists('UserList_Plugin')) :
                         <th> ' . esc_html__( "Role", "user-list-plugin" ) . '  </th>
                     </tr>
                 </thead>';
-            $output .= '<tbody>';
-            $i=1;
-            foreach ( $rows as $key => $row ) {
-                $user_info = get_userdata( $row->ID );
-                $user_roles = implode( ', ', $user_info->roles );
-                $output  .='<tr>
-                                <td> ' . $i++ . '</td>
-                                <td> ' . $row->user_nicename . '</td>
-                                <td>' . $row->display_name . '</td>
-                                <td> ' . $user_roles . '</td>
-                            </tr>';
-            }
+          
+                $output .= '<tbody>';
+           
+                $i=1;
+                foreach ( $rows as $key => $row ) {
+                        $user_info = get_userdata( $row->ID );
+                        $user_roles = implode( ', ', $user_info->roles );
+                        $output  .='<tr>
+                                        <td> ' . $i++ . '</td>
+                                        <td> ' . $row->user_nicename . '</td>
+                                        <td>' . $row->display_name . '</td>
+                                        <td> ' . $user_roles . '</td>
+                                    </tr>';
+                    }
                 $output .= '</tbody>';
                 $output .= '</table>';
-                $page_query =$wpdb->get_results( 'SELECT wp_users.ID, wp_users.user_nicename, wp_users. display_name,"' . $role . '" as meta_value 
+            
+                $page_query =
+                $wpdb->get_results( 'SELECT wp_users.ID, wp_users.user_nicename, wp_users. display_name,"' . $role . '" as meta_value 
                 FROM wp_users INNER JOIN wp_usermeta 
                 ON wp_users.ID = wp_usermeta.user_id 
                 WHERE wp_usermeta.meta_key = "wp_capabilities" 
                 AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ' ' );
-            if ( count( $page_query ) == 0 ) {
-                echo "Sorry,No Data Found For This User";
-                die();
-            } else {
-                $rowcount = count( $page_query );
-            }
-            $total_pages = ceil( $rowcount / $record_per_page );
-            $output .= '<div id="pagination">';
-            for ( $i = 1; $i <= $total_pages; $i++ ) {
-                $output .= '<a  class="active" href="" id=' . $i . '>' . $i . '</a>';
-            }
-            $output .= '</div>';
+                    
+                if ( count( $page_query ) == 0 ) {
+                    echo "Sorry,No Data Found For This User"; //If the query returns nothing we thrown a error message
+                    die();
+                } else {
+                    $rowcount = count( $page_query );
+                }
+
+                 $total_pages = ceil( $rowcount / $record_per_page );
+
+                 $output .= '<div id="pagination">';
+                 for ( $i = 1; $i <= $total_pages; $i++ ) {
+                    $output .= '<a  class="active" href="" id=' . $i . '>' . $i . '</a>';
+                    }
+                $output .= '</div>';
 
             wp_send_json( $output );
         }
 
         public function ulp_load_table_login()
         {
+        //  Unauthourized Users
             echo 'Hello Please Login To See the Information';
             die();
         }

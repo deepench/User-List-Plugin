@@ -1,8 +1,9 @@
 jQuery(document).ready(function () {
-
     // For get the userlist information
-    function loadTable( page ) {
-        var role = jQuery( '#ulp_role' ).val();
+    function loadTable(page) {
+        
+        // Get the value form the dropdownlist
+        var role = jQuery( '#ulp_role' ).val(); 
         var order = jQuery( '#ulp_order' ).val();
         var userorder = jQuery( '#ulp_userorder' ).val();
 
