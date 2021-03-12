@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-if (!class_exists('UserList_Plugin')) :
+
 
     class UserList_Plugin
     {
@@ -43,7 +43,7 @@ if (!class_exists('UserList_Plugin')) :
             ob_start();
             $user = wp_get_current_user();
             $allowed_roles = array( 'administrator' );
-            if( array_intersect($allowed_roles, $user->roles ) ) { 
+            if( array_intersect( $allowed_roles, $user->roles ) ) { 
             include  plugin_dir_path(__FILE__)."inc/ulp_table_info.php";
         } else{
             echo "<p class='unauthorized-msg'>You are not authorized to acess this page<p>";
@@ -76,7 +76,7 @@ if (!class_exists('UserList_Plugin')) :
             global $wpdb;
 
             // Checking the nonce for the security purpose
-            if (!check_ajax_referer('ulp-nonce', 'security', false)) {
+            if ( !check_ajax_referer( 'ulp-nonce', 'security', false ) ) {
                 wp_send_json_error(
                     array(
                         'message' => __('Nonce error, please reload.', 'user-list-plugin'),
@@ -168,6 +168,7 @@ if (!class_exists('UserList_Plugin')) :
         }
     }
 
-endif;
 
+if ( class_exists( 'UserList_Plugin' ) ) {
 $ulpPlugin = new UserList_Plugin();
+}

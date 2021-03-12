@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+    
     // For get the userlist information
     function loadTable(page) {
         
