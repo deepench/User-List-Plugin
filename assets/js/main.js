@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
     
     // For get the userlist information
-    function loadTable(page) {
+    function loadTable( page ) {
         
         // Get the value form the dropdownlist
         var role = jQuery( '#ulp_role' ).val(); 
@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
     })
 
     // Submit the filter and ordering
-    jQuery(document).on("click", "#submit", function (e) {
+    jQuery(document).on( "click", "#submit", function (e) {
         e.preventDefault();
         loadTable(1);
     })

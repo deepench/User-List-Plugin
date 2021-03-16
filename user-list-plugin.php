@@ -43,12 +43,12 @@ if ( !defined( 'ABSPATH' ) ) {
             ob_start();
             $user = wp_get_current_user();
             $allowed_roles = array( 'administrator' );
+
             if( array_intersect( $allowed_roles, $user->roles ) ) { 
-            include  plugin_dir_path(__FILE__)."inc/ulp_table_info.php";
-        } else{
-            echo "<p class='unauthorized-msg'>You are not authorized to acess this page<p>";
+                include  plugin_dir_path(__FILE__)."inc/ulp_table_info.php";
+        } else {
+                echo "<p class='unauthorized-msg'>You are not authorized to acess this page<p>";
         }
-         
             return ob_get_clean();
         }
         /**
@@ -101,6 +101,7 @@ if ( !defined( 'ABSPATH' ) ) {
             } else {
                 $page = 1;
             }
+            
             $start_from = ( $page - 1 ) * $record_per_page;
 
         //Retrieve all the users
