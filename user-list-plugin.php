@@ -60,7 +60,6 @@ if ( !defined( 'ABSPATH' ) ) {
                 'ajaxurl' => admin_url( 'admin-ajax.php' ),
                 'ulp_script_nonce' => wp_create_nonce( 'ulp-nonce' ),
             ));
-            wp_enqueue_script( 'jquery' );
             wp_enqueue_script( 'ulp_plugin_script' );
         }
 
