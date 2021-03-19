@@ -97,7 +97,7 @@ if ( !defined( 'ABSPATH' ) ) {
             $page = '';
 
             if ( isset( $_POST["page"] ) ) {
-                $page = $_POST["page"];
+                $page = intval($_POST["page"]);
             } else {
                 $page = 1;
             }
