@@ -99,9 +99,9 @@ if ( !defined( 'ABSPATH' ) ) {
             $start_from = ( $page - 1 ) * $record_per_page;
 
         //Retrieve all the users
-            $rows = $wpdb->get_results(
+            $rows = $wpdb->get_results($wpdb->prepare(
                     'SELECT wp_users.ID, wp_users.user_nicename, wp_users.display_name,"' . $role . '" as meta_value FROM wp_users INNER JOIN wp_usermeta  ON wp_users.ID = wp_usermeta.user_id 
-                    WHERE wp_usermeta.meta_key = "wp_capabilities" AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ', wp_users . user_nicename ' . $ulp_userorder . '  LIMIT ' . $start_from . ',' . $record_per_page . ' ' );
+                    WHERE wp_usermeta.meta_key = "wp_capabilities" AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ', wp_users . user_nicename ' . $ulp_userorder . '  LIMIT ' . $start_from . ',' . $record_per_page . ' ' ) );
           
                     $output = "";
                     $output =  '<table>';
@@ -131,11 +131,11 @@ if ( !defined( 'ABSPATH' ) ) {
                 $output .= '</table>';
             
                 $page_query =
-                $wpdb->get_results( 'SELECT wp_users.ID, wp_users.user_nicename, wp_users. display_name,"' . $role . '" as meta_value 
+                $wpdb->get_results($wpdb->prepare( 'SELECT wp_users.ID, wp_users.user_nicename, wp_users. display_name,"' . $role . '" as meta_value 
                 FROM wp_users INNER JOIN wp_usermeta 
                 ON wp_users.ID = wp_usermeta.user_id 
                 WHERE wp_usermeta.meta_key = "wp_capabilities" 
-                AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ' ' );
+                AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ' ' ) );
                     
                 if ( count( $page_query ) == 0 ) {
                     echo __('Sorry,No Data Found For This User','user-list-plugin'); //If the query returns nothing we thrown a error message
