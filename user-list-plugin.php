@@ -47,7 +47,7 @@ if ( !defined( 'ABSPATH' ) ) {
             if( array_intersect( $allowed_roles, $user->roles ) ) { 
                 include  plugin_dir_path(__FILE__)."inc/ulp_table_info.php";
         } else {
-                echo "<p class='unauthorized-msg'>You are not authorized to acess this page<p>";
+                echo __('<p class="unauthorized-msg">You are not authorized to acess this page<p>','user-list-plugin');
         }
             return ob_get_clean();
         }
@@ -144,7 +144,7 @@ if ( !defined( 'ABSPATH' ) ) {
                 AND wp_usermeta.meta_value LIKE "%' . $role . '%" ORDER BY wp_users.display_name ' . $order . ' ' );
                     
                 if ( count( $page_query ) == 0 ) {
-                    echo "Sorry,No Data Found For This User"; //If the query returns nothing we thrown a error message
+                    echo __('Sorry,No Data Found For This User','user-list-plugin'); //If the query returns nothing we thrown a error message
                     die();
                 } else {
                     $rowcount = count( $page_query );
@@ -164,7 +164,7 @@ if ( !defined( 'ABSPATH' ) ) {
         public function ulp_load_table_login()
         {
         //  Unauthourized Users
-            echo 'Hello Please Login To See the Information';
+            echo __('Hello Please Login To See the Information','user-list-plugin');
             die();
         }
     }
