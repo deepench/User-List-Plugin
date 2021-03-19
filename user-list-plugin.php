@@ -20,15 +20,13 @@ if ( !defined( 'ABSPATH' ) ) {
     class UserList_Plugin
     {
 
-        public function __construct()
-        {
+        public function __construct() {
             $this->init();
         }
         /**
          * Hooks into actions and filters
          */
-        public function init()
-        {
+        public function init() {
             add_action( 'wp_enqueue_scripts', array( $this, 'ulp_script_enqueuer' ) );
             add_shortcode( 'ulp_user_detail', array( $this, 'ulp_user_list_detail' ) );
             add_action('wp_ajax_nopriv_load_table', array( $this, 'ulp_load_table_login' ) );
@@ -38,8 +36,7 @@ if ( !defined( 'ABSPATH' ) ) {
          * Including a shorcode List
          * and checking the user is admin 
          */
-        public function ulp_user_list_detail()
-        {
+        public function ulp_user_list_detail() {
             ob_start();
             $user = wp_get_current_user();
             $allowed_roles = array( 'administrator' );
@@ -55,8 +52,7 @@ if ( !defined( 'ABSPATH' ) ) {
          * including the css nad jaavscript file for intialization
          */
 
-        public function ulp_script_enqueuer()
-        {
+        public function ulp_script_enqueuer()  {
             wp_register_script( 'ulp_plugin_script', plugin_dir_url(__FILE__) . "assets/js/main.js", array('jquery'), '1.0.0', true );
             wp_enqueue_style( 'ulp_plugin_css', plugin_dir_url(__FILE__) .
                 "assets/css/style.css" );
@@ -71,8 +67,7 @@ if ( !defined( 'ABSPATH' ) ) {
         /**
          * Processing the userlist data
          */
-        public function ulp_load_table()
-        {
+        public function ulp_load_table() {
             global $wpdb;
 
             // Checking the nonce for the security purpose
@@ -161,8 +156,7 @@ if ( !defined( 'ABSPATH' ) ) {
             wp_send_json( $output );
         }
 
-        public function ulp_load_table_login()
-        {
+        public function ulp_load_table_login()  {
         //  Unauthourized Users
             echo __('Hello Please Login To See the Information','user-list-plugin');
             die();
