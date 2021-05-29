@@ -19,5 +19,5 @@ Features
 * The User can be can ordered according their displayname and username in ascending and descending order.
 * In the table the Pagination added.
 * If user is not admin he/she will see a message like "You are not authorized to see this content".
-* The role will no users get a message "Sorry,No data fond for this user".
-* The pagination limit is for 10 user to see more users you need to click to number 2 in pageination.
+* The role will no users get a message "Sorry,No data found for this user".
+* The pagination limit is for 10 user to see more users you need to click to number 2 in pagination.
